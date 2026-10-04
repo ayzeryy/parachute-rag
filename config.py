@@ -6,7 +6,7 @@ DEFAULT_EMBEDDING_MODEL = (
     "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 )
 DEFAULT_EMBEDDING_DIMENSION = 384
-DEFAULT_LLM_MODEL = "nvidia/nemotron-3-nano-30b-a3b"
+DEFAULT_LLM_MODEL = "meta/llama-3.2-90b-vision-instruct"
 
 
 def database_url() -> str:

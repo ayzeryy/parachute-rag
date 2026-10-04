@@ -1,0 +1,1973 @@
+{
+  "evalId": "eval-KEG-2026-10-04T04:01:55",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-10-04T04:01:55.818Z",
+    "prompts": [
+      {
+        "id": "d3bcaf71c11c2678899be04d872718325f0916b3b0705e805ee29930663a42e2",
+        "raw": "{{question}}",
+        "label": "{{question}}",
+        "provider": "Arquitectura centralizada",
+        "metrics": {
+          "score": 5,
+          "testPassCount": 5,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 25,
+          "assertFailCount": 0,
+          "totalLatencyMs": 5,
+          "tokenUsage": {
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "total": 0,
+            "numRequests": 5,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 2564,
+              "prompt": 2078,
+              "completion": 486,
+              "cached": 0,
+              "numRequests": 5,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "namedScores": {
+            "deterministic-contains": 5,
+            "deterministic-regex": 5,
+            "latency": 5,
+            "tool-execution": 5,
+            "factuality": 5
+          },
+          "namedScoresCount": {
+            "deterministic-contains": 5,
+            "deterministic-regex": 5,
+            "latency": 5,
+            "tool-execution": 5,
+            "factuality": 5
+          },
+          "namedScoreWeights": {
+            "deterministic-contains": 5,
+            "deterministic-regex": 5,
+            "latency": 5,
+            "tool-execution": 5,
+            "factuality": 5
+          },
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "deterministic-contains": 1,
+            "deterministic-regex": 1,
+            "latency": 1,
+            "tool-execution": 1,
+            "factuality": 1
+          },
+          "namedScoreWeights": {
+            "deterministic-contains": 1,
+            "deterministic-regex": 1,
+            "latency": 1,
+            "tool-execution": 1,
+            "factuality": 1
+          },
+          "tokensUsed": {
+            "total": 498,
+            "prompt": 408,
+            "completion": 90,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "contains",
+                "value": "100 kg",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "deterministic-contains"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "regex",
+                "value": "FAQ-021",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "deterministic-regex"
+              }
+            },
+            {
+              "assertion": {
+                "type": "factuality",
+                "value": "El peso máximo estricto es 100 kg; cada participante es pesado al registrarse y entre 90 kg y 100 kg se cobra Q250 adicionales.",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "factuality"
+              },
+              "pass": true,
+              "score": 1,
+              "reason": "The submitted answer contains all the same details as the expert answer, including the maximum weight limit of 100 kg, the weight check during registration, and the additional charge of Q250 for participants between 90 kg and 100 kg. The only differences are minor rewording and the addition of '(FAQ-021)' in the submitted answer, which do not affect the factual content.",
+              "tokensUsed": {
+                "total": 498,
+                "prompt": 408,
+                "completion": 90,
+                "cached": 0,
+                "numRequests": 1,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "latency",
+                "threshold": 1000,
+                "metric": "latency"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Tool Call F1: 1.000 (precision=1.000, recall=1.000). Expected: [faqs, triage], Called: [faqs, triage]",
+              "assertion": {
+                "type": "tool-call-f1",
+                "value": [
+                  "triage",
+                  "faqs"
+                ],
+                "threshold": 1,
+                "metric": "tool-execution"
+              }
+            }
+          ]
+        },
+        "id": "b05d793d-6f44-4d6d-89e5-390b5a882c64",
+        "latencyMs": 1,
+        "namedScores": {
+          "deterministic-contains": 1,
+          "deterministic-regex": 1,
+          "latency": 1,
+          "tool-execution": 1,
+          "factuality": 1
+        },
+        "prompt": {
+          "raw": "¿Cuál es el peso máximo permitido para saltar?",
+          "label": "{{question}}",
+          "config": {
+            "provider": {
+              "id": "openai:chat:meta/llama-3.2-90b-vision-instruct",
+              "config": {
+                "apiBaseUrl": "https://integrate.api.nvidia.com/v1",
+                "apiKeyEnvar": "[REDACTED]",
+                "temperature": 0,
+                "max_tokens": 500
+              }
+            }
+          }
+        },
+        "promptId": "d3bcaf71c11c2678899be04d872718325f0916b3b0705e805ee29930663a42e2",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://evals/provider.py",
+          "label": "Arquitectura centralizada"
+        },
+        "response": {
+          "output": "{\"type\": \"function_call\", \"id\": \"fc_1\", \"call_id\": \"call_1\", \"name\": \"triage\", \"arguments\": \"{\\\"mensaje\\\": \\\"¿Cuál es el peso máximo permitido para saltar?\\\", \\\"intencion\\\": \\\"faq\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_2\", \"call_id\": \"call_2\", \"name\": \"faqs\", \"arguments\": \"{\\\"consulta\\\": \\\"¿Cuál es el peso máximo permitido para saltar?\\\", \\\"cantidad\\\": 5}\"}\nFINAL_ANSWER\n- El límite de peso máximo estricto para realizar el salto tándem es de 100 kg. Cada participante es pesado durante el registro. Entre 90 kg y 100 kg se aplica un recargo de Q250. (FAQ-021)",
+          "latencyMs": 1,
+          "cached": false,
+          "metadata": {
+            "architecture": "centralized",
+            "toolCalls": [
+              {
+                "type": "function_call",
+                "id": "fc_1",
+                "call_id": "call_1",
+                "name": "triage",
+                "arguments": "{\"mensaje\": \"¿Cuál es el peso máximo permitido para saltar?\", \"intencion\": \"faq\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_2",
+                "call_id": "call_2",
+                "name": "faqs",
+                "arguments": "{\"consulta\": \"¿Cuál es el peso máximo permitido para saltar?\", \"cantidad\": 5}"
+              }
+            ]
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "FAQ: límite de peso",
+          "metadata": {
+            "functionality": "faq"
+          },
+          "vars": {
+            "question": "¿Cuál es el peso máximo permitido para saltar?",
+            "faq_id": "FAQ-021",
+            "faq_answer": "El límite de peso máximo estricto para realizar el salto tándem es de 100 kg. Cada participante es pesado durante el registro. Entre 90 kg y 100 kg se aplica un recargo de Q250."
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "100 kg",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "deterministic-contains"
+            },
+            {
+              "type": "regex",
+              "value": "FAQ-021",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "deterministic-regex"
+            },
+            {
+              "type": "factuality",
+              "value": "El peso máximo estricto es 100 kg; cada participante es pesado al registrarse y entre 90 kg y 100 kg se cobra Q250 adicionales.",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "factuality"
+            },
+            {
+              "type": "latency",
+              "threshold": 1000,
+              "metric": "latency"
+            },
+            {
+              "type": "tool-call-f1",
+              "value": [
+                "triage",
+                "faqs"
+              ],
+              "threshold": 1,
+              "metric": "tool-execution"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "openai:chat:meta/llama-3.2-90b-vision-instruct",
+              "config": {
+                "apiBaseUrl": "https://integrate.api.nvidia.com/v1",
+                "apiKeyEnvar": "[REDACTED]",
+                "temperature": 0,
+                "max_tokens": 500
+              }
+            }
+          }
+        },
+        "testIdx": 0,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 498,
+            "prompt": 408,
+            "completion": 90,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "question": "¿Cuál es el peso máximo permitido para saltar?",
+          "faq_id": "FAQ-021",
+          "faq_answer": "El límite de peso máximo estricto para realizar el salto tándem es de 100 kg. Cada participante es pesado durante el registro. Entre 90 kg y 100 kg se aplica un recargo de Q250."
+        },
+        "metadata": {
+          "functionality": "faq",
+          "architecture": "centralized",
+          "toolCalls": [
+            {
+              "type": "function_call",
+              "id": "fc_1",
+              "call_id": "call_1",
+              "name": "triage",
+              "arguments": "{\"mensaje\": \"¿Cuál es el peso máximo permitido para saltar?\", \"intencion\": \"faq\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_2",
+              "call_id": "call_2",
+              "name": "faqs",
+              "arguments": "{\"consulta\": \"¿Cuál es el peso máximo permitido para saltar?\", \"cantidad\": 5}"
+            }
+          ],
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "deterministic-contains": 1,
+            "deterministic-regex": 1,
+            "latency": 1,
+            "tool-execution": 1,
+            "factuality": 1
+          },
+          "namedScoreWeights": {
+            "deterministic-contains": 1,
+            "deterministic-regex": 1,
+            "latency": 1,
+            "tool-execution": 1,
+            "factuality": 1
+          },
+          "tokensUsed": {
+            "total": 526,
+            "prompt": 409,
+            "completion": 117,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "contains",
+                "value": "18 años",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "deterministic-contains"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "regex",
+                "value": "(16 y 17|17 años).*?(padres|tutores)",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "deterministic-regex"
+              }
+            },
+            {
+              "assertion": {
+                "type": "factuality",
+                "value": "La edad mínima es 18 años con identificación. Una persona de 16 o 17 años requiere acompañamiento y autorización de sus padres o tutores.",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "factuality"
+              },
+              "pass": true,
+              "score": 1,
+              "reason": "The submitted answer is a superset of the expert answer and is fully consistent with it. The submitted answer includes all the information from the expert answer, such as the minimum age of 18 years and the requirement for 16- and 17-year-olds to be accompanied by their parents or tutors. Additionally, the submitted answer provides more specific details, like the need for a DPI or passport for 18-year-olds and the requirement for parents or tutors to sign an authorization for 16- and 17-year-olds.",
+              "tokensUsed": {
+                "total": 526,
+                "prompt": 409,
+                "completion": 117,
+                "cached": 0,
+                "numRequests": 1,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "latency",
+                "threshold": 1000,
+                "metric": "latency"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Tool Call F1: 1.000 (precision=1.000, recall=1.000). Expected: [faqs, triage], Called: [faqs, triage]",
+              "assertion": {
+                "type": "tool-call-f1",
+                "value": [
+                  "triage",
+                  "faqs"
+                ],
+                "threshold": 1,
+                "metric": "tool-execution"
+              }
+            }
+          ]
+        },
+        "id": "26f7ede1-0d2e-4e26-b1e1-51d5c81ff39a",
+        "latencyMs": 1,
+        "namedScores": {
+          "deterministic-contains": 1,
+          "deterministic-regex": 1,
+          "latency": 1,
+          "tool-execution": 1,
+          "factuality": 1
+        },
+        "prompt": {
+          "raw": "¿Qué edad necesito para saltar y qué pasa si tengo 17 años?",
+          "label": "{{question}}",
+          "config": {
+            "provider": {
+              "id": "openai:chat:meta/llama-3.2-90b-vision-instruct",
+              "config": {
+                "apiBaseUrl": "https://integrate.api.nvidia.com/v1",
+                "apiKeyEnvar": "[REDACTED]",
+                "temperature": 0,
+                "max_tokens": 500
+              }
+            }
+          }
+        },
+        "promptId": "d3bcaf71c11c2678899be04d872718325f0916b3b0705e805ee29930663a42e2",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://evals/provider.py",
+          "label": "Arquitectura centralizada"
+        },
+        "response": {
+          "output": "{\"type\": \"function_call\", \"id\": \"fc_1\", \"call_id\": \"call_1\", \"name\": \"triage\", \"arguments\": \"{\\\"mensaje\\\": \\\"¿Qué edad necesito para saltar y qué pasa si tengo 17 años?\\\", \\\"intencion\\\": \\\"faq\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_2\", \"call_id\": \"call_2\", \"name\": \"faqs\", \"arguments\": \"{\\\"consulta\\\": \\\"¿Qué edad necesito para saltar y qué pasa si tengo 17 años?\\\", \\\"cantidad\\\": 5}\"}\nFINAL_ANSWER\n- La edad mínima es 18 años con DPI o pasaporte. Las personas de 16 y 17 años solo pueden participar acompañadas por sus padres o tutores legales, quienes deben firmar la autorización correspondiente. (FAQ-023)",
+          "latencyMs": 1,
+          "cached": false,
+          "metadata": {
+            "architecture": "centralized",
+            "toolCalls": [
+              {
+                "type": "function_call",
+                "id": "fc_1",
+                "call_id": "call_1",
+                "name": "triage",
+                "arguments": "{\"mensaje\": \"¿Qué edad necesito para saltar y qué pasa si tengo 17 años?\", \"intencion\": \"faq\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_2",
+                "call_id": "call_2",
+                "name": "faqs",
+                "arguments": "{\"consulta\": \"¿Qué edad necesito para saltar y qué pasa si tengo 17 años?\", \"cantidad\": 5}"
+              }
+            ]
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "FAQ: edad mínima y autorización",
+          "metadata": {
+            "functionality": "faq"
+          },
+          "vars": {
+            "question": "¿Qué edad necesito para saltar y qué pasa si tengo 17 años?",
+            "faq_id": "FAQ-023",
+            "faq_answer": "La edad mínima es 18 años con DPI o pasaporte. Las personas de 16 y 17 años solo pueden participar acompañadas por sus padres o tutores legales, quienes deben firmar la autorización correspondiente."
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "18 años",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "deterministic-contains"
+            },
+            {
+              "type": "regex",
+              "value": "(16 y 17|17 años).*?(padres|tutores)",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "deterministic-regex"
+            },
+            {
+              "type": "factuality",
+              "value": "La edad mínima es 18 años con identificación. Una persona de 16 o 17 años requiere acompañamiento y autorización de sus padres o tutores.",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "factuality"
+            },
+            {
+              "type": "latency",
+              "threshold": 1000,
+              "metric": "latency"
+            },
+            {
+              "type": "tool-call-f1",
+              "value": [
+                "triage",
+                "faqs"
+              ],
+              "threshold": 1,
+              "metric": "tool-execution"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "openai:chat:meta/llama-3.2-90b-vision-instruct",
+              "config": {
+                "apiBaseUrl": "https://integrate.api.nvidia.com/v1",
+                "apiKeyEnvar": "[REDACTED]",
+                "temperature": 0,
+                "max_tokens": 500
+              }
+            }
+          }
+        },
+        "testIdx": 1,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 526,
+            "prompt": 409,
+            "completion": 117,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "question": "¿Qué edad necesito para saltar y qué pasa si tengo 17 años?",
+          "faq_id": "FAQ-023",
+          "faq_answer": "La edad mínima es 18 años con DPI o pasaporte. Las personas de 16 y 17 años solo pueden participar acompañadas por sus padres o tutores legales, quienes deben firmar la autorización correspondiente."
+        },
+        "metadata": {
+          "functionality": "faq",
+          "architecture": "centralized",
+          "toolCalls": [
+            {
+              "type": "function_call",
+              "id": "fc_1",
+              "call_id": "call_1",
+              "name": "triage",
+              "arguments": "{\"mensaje\": \"¿Qué edad necesito para saltar y qué pasa si tengo 17 años?\", \"intencion\": \"faq\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_2",
+              "call_id": "call_2",
+              "name": "faqs",
+              "arguments": "{\"consulta\": \"¿Qué edad necesito para saltar y qué pasa si tengo 17 años?\", \"cantidad\": 5}"
+            }
+          ],
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "deterministic-contains": 1,
+            "deterministic-regex": 1,
+            "latency": 1,
+            "tool-execution": 1,
+            "factuality": 1
+          },
+          "namedScoreWeights": {
+            "deterministic-contains": 1,
+            "deterministic-regex": 1,
+            "latency": 1,
+            "tool-execution": 1,
+            "factuality": 1
+          },
+          "tokensUsed": {
+            "total": 513,
+            "prompt": 429,
+            "completion": 84,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "contains",
+                "value": "Cita #1 creada",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "deterministic-contains"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "regex",
+                "value": "2026-10-10.*Condición IDEAL",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "deterministic-regex"
+              }
+            },
+            {
+              "assertion": {
+                "type": "factuality",
+                "value": "La cita del 10 de octubre de 2026 se crea porque no hay precipitación, el viento es 12 km/h, las ráfagas 20 km/h y las nubes 15%.",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "factuality"
+              },
+              "pass": true,
+              "score": 1,
+              "reason": "The submitted answer is a superset of the expert answer and is fully consistent with it. The submitted answer includes all the details from the expert answer (date, wind speed, gusts, and cloud cover) and adds additional information (precipitation, temperature, and the fact that all values are within the ideal range), making it a superset.",
+              "tokensUsed": {
+                "total": 513,
+                "prompt": 429,
+                "completion": 84,
+                "cached": 0,
+                "numRequests": 1,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "latency",
+                "threshold": 1000,
+                "metric": "latency"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Tool Call F1: 1.000 (precision=1.000, recall=1.000). Expected: [agenda, clima, fecha, seguridad, triage], Called: [agenda, clima, fecha, seguridad, triage]",
+              "assertion": {
+                "type": "tool-call-f1",
+                "value": [
+                  "triage",
+                  "fecha",
+                  "clima",
+                  "seguridad",
+                  "agenda"
+                ],
+                "threshold": 1,
+                "metric": "tool-execution"
+              }
+            }
+          ]
+        },
+        "id": "25e35058-6b0b-4ecf-8c29-924b7c332e57",
+        "latencyMs": 1,
+        "namedScores": {
+          "deterministic-contains": 1,
+          "deterministic-regex": 1,
+          "latency": 1,
+          "tool-execution": 1,
+          "factuality": 1
+        },
+        "prompt": {
+          "raw": "Quiero agendar una cita el 2026-10-10",
+          "label": "{{question}}",
+          "config": {
+            "provider": {
+              "id": "openai:chat:meta/llama-3.2-90b-vision-instruct",
+              "config": {
+                "apiBaseUrl": "https://integrate.api.nvidia.com/v1",
+                "apiKeyEnvar": "[REDACTED]",
+                "temperature": 0,
+                "max_tokens": 500
+              }
+            }
+          }
+        },
+        "promptId": "d3bcaf71c11c2678899be04d872718325f0916b3b0705e805ee29930663a42e2",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://evals/provider.py",
+          "label": "Arquitectura centralizada"
+        },
+        "response": {
+          "output": "{\"type\": \"function_call\", \"id\": \"fc_1\", \"call_id\": \"call_1\", \"name\": \"triage\", \"arguments\": \"{\\\"mensaje\\\": \\\"Quiero agendar una cita el 2026-10-10\\\", \\\"intencion\\\": \\\"appointment\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_2\", \"call_id\": \"call_2\", \"name\": \"fecha\", \"arguments\": \"{\\\"fecha\\\": \\\"2026-10-10\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_3\", \"call_id\": \"call_3\", \"name\": \"clima\", \"arguments\": \"{\\\"fecha\\\": \\\"2026-10-10\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_4\", \"call_id\": \"call_4\", \"name\": \"seguridad\", \"arguments\": \"{\\\"fecha\\\": \\\"2026-10-10\\\", \\\"resultado\\\": \\\"ideal\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_5\", \"call_id\": \"call_5\", \"name\": \"agenda\", \"arguments\": \"{\\\"cliente\\\": \\\"Ana\\\", \\\"fecha\\\": \\\"2026-10-10\\\", \\\"accion\\\": \\\"evaluar\\\"}\"}\nFINAL_ANSWER\nCita #1 creada para 2026-10-10. Condición IDEAL: viento 12.0 km/h, ráfagas 20.0 km/h, precipitación 0.0 mm, nubes 15%, temperatura 26.0 °C. todos los valores están dentro del rango ideal",
+          "latencyMs": 1,
+          "cached": false,
+          "metadata": {
+            "architecture": "centralized",
+            "toolCalls": [
+              {
+                "type": "function_call",
+                "id": "fc_1",
+                "call_id": "call_1",
+                "name": "triage",
+                "arguments": "{\"mensaje\": \"Quiero agendar una cita el 2026-10-10\", \"intencion\": \"appointment\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_2",
+                "call_id": "call_2",
+                "name": "fecha",
+                "arguments": "{\"fecha\": \"2026-10-10\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_3",
+                "call_id": "call_3",
+                "name": "clima",
+                "arguments": "{\"fecha\": \"2026-10-10\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_4",
+                "call_id": "call_4",
+                "name": "seguridad",
+                "arguments": "{\"fecha\": \"2026-10-10\", \"resultado\": \"ideal\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_5",
+                "call_id": "call_5",
+                "name": "agenda",
+                "arguments": "{\"cliente\": \"Ana\", \"fecha\": \"2026-10-10\", \"accion\": \"evaluar\"}"
+              }
+            ]
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Citas: condición ideal crea la reserva",
+          "metadata": {
+            "functionality": "appointments"
+          },
+          "vars": {
+            "question": "Quiero agendar una cita el 2026-10-10",
+            "customer": "Ana",
+            "temperature": 26,
+            "rain": 0,
+            "clouds": 15,
+            "wind": 12,
+            "gust": 20
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "Cita #1 creada",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "deterministic-contains"
+            },
+            {
+              "type": "regex",
+              "value": "2026-10-10.*Condición IDEAL",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "deterministic-regex"
+            },
+            {
+              "type": "factuality",
+              "value": "La cita del 10 de octubre de 2026 se crea porque no hay precipitación, el viento es 12 km/h, las ráfagas 20 km/h y las nubes 15%.",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "factuality"
+            },
+            {
+              "type": "latency",
+              "threshold": 1000,
+              "metric": "latency"
+            },
+            {
+              "type": "tool-call-f1",
+              "value": [
+                "triage",
+                "fecha",
+                "clima",
+                "seguridad",
+                "agenda"
+              ],
+              "threshold": 1,
+              "metric": "tool-execution"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "openai:chat:meta/llama-3.2-90b-vision-instruct",
+              "config": {
+                "apiBaseUrl": "https://integrate.api.nvidia.com/v1",
+                "apiKeyEnvar": "[REDACTED]",
+                "temperature": 0,
+                "max_tokens": 500
+              }
+            }
+          }
+        },
+        "testIdx": 2,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 513,
+            "prompt": 429,
+            "completion": 84,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "question": "Quiero agendar una cita el 2026-10-10",
+          "customer": "Ana",
+          "temperature": 26,
+          "rain": 0,
+          "clouds": 15,
+          "wind": 12,
+          "gust": 20
+        },
+        "metadata": {
+          "functionality": "appointments",
+          "architecture": "centralized",
+          "toolCalls": [
+            {
+              "type": "function_call",
+              "id": "fc_1",
+              "call_id": "call_1",
+              "name": "triage",
+              "arguments": "{\"mensaje\": \"Quiero agendar una cita el 2026-10-10\", \"intencion\": \"appointment\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_2",
+              "call_id": "call_2",
+              "name": "fecha",
+              "arguments": "{\"fecha\": \"2026-10-10\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_3",
+              "call_id": "call_3",
+              "name": "clima",
+              "arguments": "{\"fecha\": \"2026-10-10\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_4",
+              "call_id": "call_4",
+              "name": "seguridad",
+              "arguments": "{\"fecha\": \"2026-10-10\", \"resultado\": \"ideal\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_5",
+              "call_id": "call_5",
+              "name": "agenda",
+              "arguments": "{\"cliente\": \"Ana\", \"fecha\": \"2026-10-10\", \"accion\": \"evaluar\"}"
+            }
+          ],
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "deterministic-contains": 1,
+            "deterministic-regex": 1,
+            "latency": 1,
+            "tool-execution": 1,
+            "factuality": 1
+          },
+          "namedScoreWeights": {
+            "deterministic-contains": 1,
+            "deterministic-regex": 1,
+            "latency": 1,
+            "tool-execution": 1,
+            "factuality": 1
+          },
+          "tokensUsed": {
+            "total": 492,
+            "prompt": 401,
+            "completion": 91,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "contains",
+                "value": "No se creó la cita",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "deterministic-contains"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "regex",
+                "value": "NO_SEGURO.*precipitación 2\\.5 mm",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "deterministic-regex"
+              }
+            },
+            {
+              "assertion": {
+                "type": "factuality",
+                "value": "La cita no debe crearse porque existe precipitación de 2.5 mm, una condición prohibida por las reglas de seguridad.",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "factuality"
+              },
+              "pass": true,
+              "score": 1,
+              "reason": "The submitted answer is a superset of the expert answer and is fully consistent with it. The expert answer mentions that the appointment should not be created due to precipitation of 2.5 mm, while the submitted answer provides additional details about the weather conditions (wind, gusts, clouds, temperature) and explicitly states that there is precipitation, which is the reason for not creating the appointment.",
+              "tokensUsed": {
+                "total": 492,
+                "prompt": 401,
+                "completion": 91,
+                "cached": 0,
+                "numRequests": 1,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "latency",
+                "threshold": 1000,
+                "metric": "latency"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Tool Call F1: 1.000 (precision=1.000, recall=1.000). Expected: [agenda, clima, fecha, seguridad, triage], Called: [agenda, clima, fecha, seguridad, triage]",
+              "assertion": {
+                "type": "tool-call-f1",
+                "value": [
+                  "triage",
+                  "fecha",
+                  "clima",
+                  "seguridad",
+                  "agenda"
+                ],
+                "threshold": 1,
+                "metric": "tool-execution"
+              }
+            }
+          ]
+        },
+        "id": "ac5ea01b-5d2a-450f-90b9-4911d25822fe",
+        "latencyMs": 1,
+        "namedScores": {
+          "deterministic-contains": 1,
+          "deterministic-regex": 1,
+          "latency": 1,
+          "tool-execution": 1,
+          "factuality": 1
+        },
+        "prompt": {
+          "raw": "Reserva una cita el 2026-10-11",
+          "label": "{{question}}",
+          "config": {
+            "provider": {
+              "id": "openai:chat:meta/llama-3.2-90b-vision-instruct",
+              "config": {
+                "apiBaseUrl": "https://integrate.api.nvidia.com/v1",
+                "apiKeyEnvar": "[REDACTED]",
+                "temperature": 0,
+                "max_tokens": 500
+              }
+            }
+          }
+        },
+        "promptId": "d3bcaf71c11c2678899be04d872718325f0916b3b0705e805ee29930663a42e2",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://evals/provider.py",
+          "label": "Arquitectura centralizada"
+        },
+        "response": {
+          "output": "{\"type\": \"function_call\", \"id\": \"fc_1\", \"call_id\": \"call_1\", \"name\": \"triage\", \"arguments\": \"{\\\"mensaje\\\": \\\"Reserva una cita el 2026-10-11\\\", \\\"intencion\\\": \\\"appointment\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_2\", \"call_id\": \"call_2\", \"name\": \"fecha\", \"arguments\": \"{\\\"fecha\\\": \\\"2026-10-11\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_3\", \"call_id\": \"call_3\", \"name\": \"clima\", \"arguments\": \"{\\\"fecha\\\": \\\"2026-10-11\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_4\", \"call_id\": \"call_4\", \"name\": \"seguridad\", \"arguments\": \"{\\\"fecha\\\": \\\"2026-10-11\\\", \\\"resultado\\\": \\\"no_seguro\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_5\", \"call_id\": \"call_5\", \"name\": \"agenda\", \"arguments\": \"{\\\"cliente\\\": \\\"Luis\\\", \\\"fecha\\\": \\\"2026-10-11\\\", \\\"accion\\\": \\\"evaluar\\\"}\"}\nFINAL_ANSWER\nNo se creó la cita. Condición NO_SEGURO: viento 14.0 km/h, ráfagas 24.0 km/h, precipitación 2.5 mm, nubes 40%, temperatura 25.0 °C. hay precipitación",
+          "latencyMs": 1,
+          "cached": false,
+          "metadata": {
+            "architecture": "centralized",
+            "toolCalls": [
+              {
+                "type": "function_call",
+                "id": "fc_1",
+                "call_id": "call_1",
+                "name": "triage",
+                "arguments": "{\"mensaje\": \"Reserva una cita el 2026-10-11\", \"intencion\": \"appointment\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_2",
+                "call_id": "call_2",
+                "name": "fecha",
+                "arguments": "{\"fecha\": \"2026-10-11\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_3",
+                "call_id": "call_3",
+                "name": "clima",
+                "arguments": "{\"fecha\": \"2026-10-11\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_4",
+                "call_id": "call_4",
+                "name": "seguridad",
+                "arguments": "{\"fecha\": \"2026-10-11\", \"resultado\": \"no_seguro\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_5",
+                "call_id": "call_5",
+                "name": "agenda",
+                "arguments": "{\"cliente\": \"Luis\", \"fecha\": \"2026-10-11\", \"accion\": \"evaluar\"}"
+              }
+            ]
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Citas: lluvia impide crear la reserva",
+          "metadata": {
+            "functionality": "appointments"
+          },
+          "vars": {
+            "question": "Reserva una cita el 2026-10-11",
+            "customer": "Luis",
+            "temperature": 25,
+            "rain": 2.5,
+            "clouds": 40,
+            "wind": 14,
+            "gust": 24
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "No se creó la cita",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "deterministic-contains"
+            },
+            {
+              "type": "regex",
+              "value": "NO_SEGURO.*precipitación 2\\.5 mm",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "deterministic-regex"
+            },
+            {
+              "type": "factuality",
+              "value": "La cita no debe crearse porque existe precipitación de 2.5 mm, una condición prohibida por las reglas de seguridad.",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "factuality"
+            },
+            {
+              "type": "latency",
+              "threshold": 1000,
+              "metric": "latency"
+            },
+            {
+              "type": "tool-call-f1",
+              "value": [
+                "triage",
+                "fecha",
+                "clima",
+                "seguridad",
+                "agenda"
+              ],
+              "threshold": 1,
+              "metric": "tool-execution"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "openai:chat:meta/llama-3.2-90b-vision-instruct",
+              "config": {
+                "apiBaseUrl": "https://integrate.api.nvidia.com/v1",
+                "apiKeyEnvar": "[REDACTED]",
+                "temperature": 0,
+                "max_tokens": 500
+              }
+            }
+          }
+        },
+        "testIdx": 3,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 492,
+            "prompt": 401,
+            "completion": 91,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "question": "Reserva una cita el 2026-10-11",
+          "customer": "Luis",
+          "temperature": 25,
+          "rain": 2.5,
+          "clouds": 40,
+          "wind": 14,
+          "gust": 24
+        },
+        "metadata": {
+          "functionality": "appointments",
+          "architecture": "centralized",
+          "toolCalls": [
+            {
+              "type": "function_call",
+              "id": "fc_1",
+              "call_id": "call_1",
+              "name": "triage",
+              "arguments": "{\"mensaje\": \"Reserva una cita el 2026-10-11\", \"intencion\": \"appointment\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_2",
+              "call_id": "call_2",
+              "name": "fecha",
+              "arguments": "{\"fecha\": \"2026-10-11\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_3",
+              "call_id": "call_3",
+              "name": "clima",
+              "arguments": "{\"fecha\": \"2026-10-11\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_4",
+              "call_id": "call_4",
+              "name": "seguridad",
+              "arguments": "{\"fecha\": \"2026-10-11\", \"resultado\": \"no_seguro\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_5",
+              "call_id": "call_5",
+              "name": "agenda",
+              "arguments": "{\"cliente\": \"Luis\", \"fecha\": \"2026-10-11\", \"accion\": \"evaluar\"}"
+            }
+          ],
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "deterministic-contains": 1,
+            "deterministic-regex": 1,
+            "latency": 1,
+            "tool-execution": 1,
+            "factuality": 1
+          },
+          "namedScoreWeights": {
+            "deterministic-contains": 1,
+            "deterministic-regex": 1,
+            "latency": 1,
+            "tool-execution": 1,
+            "factuality": 1
+          },
+          "tokensUsed": {
+            "total": 535,
+            "prompt": 431,
+            "completion": 104,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "contains",
+                "value": "requiere un tándem experimentado",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "deterministic-contains"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "regex",
+                "value": "MARGINAL.*viento 24\\.0 km/h",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "deterministic-regex"
+              }
+            },
+            {
+              "assertion": {
+                "type": "factuality",
+                "value": "Con viento de 24 km/h la condición es marginal y la cita no se crea si el cliente no declara un tándem experimentado.",
+                "transform": "output.split('FINAL_ANSWER\\n').pop()",
+                "metric": "factuality"
+              },
+              "pass": true,
+              "score": 1,
+              "reason": "The submitted answer is a superset of the expert answer and is fully consistent with it. The submitted answer includes all the information from the expert answer, such as the marginal condition and the requirement for an experienced tandem, and also provides additional details about the weather conditions, including wind speed, gusts, precipitation, cloud cover, and temperature. The submitted answer also explains the wind speed range for an experienced tandem, which is not present in the expert answer.",
+              "tokensUsed": {
+                "total": 535,
+                "prompt": 431,
+                "completion": 104,
+                "cached": 0,
+                "numRequests": 1,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "latency",
+                "threshold": 1000,
+                "metric": "latency"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Tool Call F1: 1.000 (precision=1.000, recall=1.000). Expected: [agenda, clima, fecha, seguridad, triage], Called: [agenda, clima, fecha, seguridad, triage]",
+              "assertion": {
+                "type": "tool-call-f1",
+                "value": [
+                  "triage",
+                  "fecha",
+                  "clima",
+                  "seguridad",
+                  "agenda"
+                ],
+                "threshold": 1,
+                "metric": "tool-execution"
+              }
+            }
+          ]
+        },
+        "id": "32a9b050-739a-4b9b-876f-9c30683f942e",
+        "latencyMs": 1,
+        "namedScores": {
+          "deterministic-contains": 1,
+          "deterministic-regex": 1,
+          "latency": 1,
+          "tool-execution": 1,
+          "factuality": 1
+        },
+        "prompt": {
+          "raw": "Agenda mi salto para el 2026-10-12",
+          "label": "{{question}}",
+          "config": {
+            "provider": {
+              "id": "openai:chat:meta/llama-3.2-90b-vision-instruct",
+              "config": {
+                "apiBaseUrl": "https://integrate.api.nvidia.com/v1",
+                "apiKeyEnvar": "[REDACTED]",
+                "temperature": 0,
+                "max_tokens": 500
+              }
+            }
+          }
+        },
+        "promptId": "d3bcaf71c11c2678899be04d872718325f0916b3b0705e805ee29930663a42e2",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://evals/provider.py",
+          "label": "Arquitectura centralizada"
+        },
+        "response": {
+          "output": "{\"type\": \"function_call\", \"id\": \"fc_1\", \"call_id\": \"call_1\", \"name\": \"triage\", \"arguments\": \"{\\\"mensaje\\\": \\\"Agenda mi salto para el 2026-10-12\\\", \\\"intencion\\\": \\\"appointment\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_2\", \"call_id\": \"call_2\", \"name\": \"fecha\", \"arguments\": \"{\\\"fecha\\\": \\\"2026-10-12\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_3\", \"call_id\": \"call_3\", \"name\": \"clima\", \"arguments\": \"{\\\"fecha\\\": \\\"2026-10-12\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_4\", \"call_id\": \"call_4\", \"name\": \"seguridad\", \"arguments\": \"{\\\"fecha\\\": \\\"2026-10-12\\\", \\\"resultado\\\": \\\"marginal\\\"}\"}\n{\"type\": \"function_call\", \"id\": \"fc_5\", \"call_id\": \"call_5\", \"name\": \"agenda\", \"arguments\": \"{\\\"cliente\\\": \\\"Marta\\\", \\\"fecha\\\": \\\"2026-10-12\\\", \\\"accion\\\": \\\"evaluar\\\"}\"}\nFINAL_ANSWER\nNo se creó la cita: la condición es marginal y requiere un tándem experimentado. Condición MARGINAL: viento 24.0 km/h, ráfagas 30.0 km/h, precipitación 0.0 mm, nubes 20%, temperatura 27.0 °C. viento de 20 a 28 km/h: solo tándem experimentado",
+          "latencyMs": 1,
+          "cached": false,
+          "metadata": {
+            "architecture": "centralized",
+            "toolCalls": [
+              {
+                "type": "function_call",
+                "id": "fc_1",
+                "call_id": "call_1",
+                "name": "triage",
+                "arguments": "{\"mensaje\": \"Agenda mi salto para el 2026-10-12\", \"intencion\": \"appointment\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_2",
+                "call_id": "call_2",
+                "name": "fecha",
+                "arguments": "{\"fecha\": \"2026-10-12\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_3",
+                "call_id": "call_3",
+                "name": "clima",
+                "arguments": "{\"fecha\": \"2026-10-12\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_4",
+                "call_id": "call_4",
+                "name": "seguridad",
+                "arguments": "{\"fecha\": \"2026-10-12\", \"resultado\": \"marginal\"}"
+              },
+              {
+                "type": "function_call",
+                "id": "fc_5",
+                "call_id": "call_5",
+                "name": "agenda",
+                "arguments": "{\"cliente\": \"Marta\", \"fecha\": \"2026-10-12\", \"accion\": \"evaluar\"}"
+              }
+            ]
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Citas: viento marginal exige tándem experimentado",
+          "metadata": {
+            "functionality": "appointments"
+          },
+          "vars": {
+            "question": "Agenda mi salto para el 2026-10-12",
+            "customer": "Marta",
+            "temperature": 27,
+            "rain": 0,
+            "clouds": 20,
+            "wind": 24,
+            "gust": 30,
+            "experienced_tandem": false
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "requiere un tándem experimentado",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "deterministic-contains"
+            },
+            {
+              "type": "regex",
+              "value": "MARGINAL.*viento 24\\.0 km/h",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "deterministic-regex"
+            },
+            {
+              "type": "factuality",
+              "value": "Con viento de 24 km/h la condición es marginal y la cita no se crea si el cliente no declara un tándem experimentado.",
+              "transform": "output.split('FINAL_ANSWER\\n').pop()",
+              "metric": "factuality"
+            },
+            {
+              "type": "latency",
+              "threshold": 1000,
+              "metric": "latency"
+            },
+            {
+              "type": "tool-call-f1",
+              "value": [
+                "triage",
+                "fecha",
+                "clima",
+                "seguridad",
+                "agenda"
+              ],
+              "threshold": 1,
+              "metric": "tool-execution"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "openai:chat:meta/llama-3.2-90b-vision-instruct",
+              "config": {
+                "apiBaseUrl": "https://integrate.api.nvidia.com/v1",
+                "apiKeyEnvar": "[REDACTED]",
+                "temperature": 0,
+                "max_tokens": 500
+              }
+            }
+          }
+        },
+        "testIdx": 4,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 535,
+            "prompt": 431,
+            "completion": 104,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "question": "Agenda mi salto para el 2026-10-12",
+          "customer": "Marta",
+          "temperature": 27,
+          "rain": 0,
+          "clouds": 20,
+          "wind": 24,
+          "gust": 30,
+          "experienced_tandem": false
+        },
+        "metadata": {
+          "functionality": "appointments",
+          "architecture": "centralized",
+          "toolCalls": [
+            {
+              "type": "function_call",
+              "id": "fc_1",
+              "call_id": "call_1",
+              "name": "triage",
+              "arguments": "{\"mensaje\": \"Agenda mi salto para el 2026-10-12\", \"intencion\": \"appointment\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_2",
+              "call_id": "call_2",
+              "name": "fecha",
+              "arguments": "{\"fecha\": \"2026-10-12\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_3",
+              "call_id": "call_3",
+              "name": "clima",
+              "arguments": "{\"fecha\": \"2026-10-12\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_4",
+              "call_id": "call_4",
+              "name": "seguridad",
+              "arguments": "{\"fecha\": \"2026-10-12\", \"resultado\": \"marginal\"}"
+            },
+            {
+              "type": "function_call",
+              "id": "fc_5",
+              "call_id": "call_5",
+              "name": "agenda",
+              "arguments": "{\"cliente\": \"Marta\", \"fecha\": \"2026-10-12\", \"accion\": \"evaluar\"}"
+            }
+          ],
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 5,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 0,
+        "completion": 0,
+        "cached": 0,
+        "total": 0,
+        "numRequests": 5,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0
+        },
+        "assertions": {
+          "total": 2564,
+          "prompt": 2078,
+          "completion": 486,
+          "cached": 0,
+          "numRequests": 5,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          }
+        }
+      },
+      "durationMs": 67186,
+      "evaluationDurationMs": 67186
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Hoja 6 - evals del agente centralizado de Parachute S.A.",
+    "prompts": [
+      {
+        "id": "solicitud-usuario",
+        "raw": "{{question}}"
+      }
+    ],
+    "providers": [
+      {
+        "id": "file://evals/provider.py",
+        "label": "Arquitectura centralizada"
+      }
+    ],
+    "tests": [
+      {
+        "description": "FAQ: límite de peso",
+        "metadata": {
+          "functionality": "faq"
+        },
+        "vars": {
+          "question": "¿Cuál es el peso máximo permitido para saltar?",
+          "faq_id": "FAQ-021",
+          "faq_answer": "El límite de peso máximo estricto para realizar el salto tándem es de 100 kg. Cada participante es pesado durante el registro. Entre 90 kg y 100 kg se aplica un recargo de Q250."
+        },
+        "assert": [
+          {
+            "type": "contains",
+            "value": "100 kg",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "deterministic-contains"
+          },
+          {
+            "type": "regex",
+            "value": "FAQ-021",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "deterministic-regex"
+          },
+          {
+            "type": "factuality",
+            "value": "El peso máximo estricto es 100 kg; cada participante es pesado al registrarse y entre 90 kg y 100 kg se cobra Q250 adicionales.",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "factuality"
+          },
+          {
+            "type": "latency",
+            "threshold": 1000,
+            "metric": "latency"
+          },
+          {
+            "type": "tool-call-f1",
+            "value": [
+              "triage",
+              "faqs"
+            ],
+            "threshold": 1,
+            "metric": "tool-execution"
+          }
+        ]
+      },
+      {
+        "description": "FAQ: edad mínima y autorización",
+        "metadata": {
+          "functionality": "faq"
+        },
+        "vars": {
+          "question": "¿Qué edad necesito para saltar y qué pasa si tengo 17 años?",
+          "faq_id": "FAQ-023",
+          "faq_answer": "La edad mínima es 18 años con DPI o pasaporte. Las personas de 16 y 17 años solo pueden participar acompañadas por sus padres o tutores legales, quienes deben firmar la autorización correspondiente."
+        },
+        "assert": [
+          {
+            "type": "contains",
+            "value": "18 años",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "deterministic-contains"
+          },
+          {
+            "type": "regex",
+            "value": "(16 y 17|17 años).*?(padres|tutores)",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "deterministic-regex"
+          },
+          {
+            "type": "factuality",
+            "value": "La edad mínima es 18 años con identificación. Una persona de 16 o 17 años requiere acompañamiento y autorización de sus padres o tutores.",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "factuality"
+          },
+          {
+            "type": "latency",
+            "threshold": 1000,
+            "metric": "latency"
+          },
+          {
+            "type": "tool-call-f1",
+            "value": [
+              "triage",
+              "faqs"
+            ],
+            "threshold": 1,
+            "metric": "tool-execution"
+          }
+        ]
+      },
+      {
+        "description": "Citas: condición ideal crea la reserva",
+        "metadata": {
+          "functionality": "appointments"
+        },
+        "vars": {
+          "question": "Quiero agendar una cita el 2026-10-10",
+          "customer": "Ana",
+          "temperature": 26,
+          "rain": 0,
+          "clouds": 15,
+          "wind": 12,
+          "gust": 20
+        },
+        "assert": [
+          {
+            "type": "contains",
+            "value": "Cita #1 creada",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "deterministic-contains"
+          },
+          {
+            "type": "regex",
+            "value": "2026-10-10.*Condición IDEAL",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "deterministic-regex"
+          },
+          {
+            "type": "factuality",
+            "value": "La cita del 10 de octubre de 2026 se crea porque no hay precipitación, el viento es 12 km/h, las ráfagas 20 km/h y las nubes 15%.",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "factuality"
+          },
+          {
+            "type": "latency",
+            "threshold": 1000,
+            "metric": "latency"
+          },
+          {
+            "type": "tool-call-f1",
+            "value": [
+              "triage",
+              "fecha",
+              "clima",
+              "seguridad",
+              "agenda"
+            ],
+            "threshold": 1,
+            "metric": "tool-execution"
+          }
+        ]
+      },
+      {
+        "description": "Citas: lluvia impide crear la reserva",
+        "metadata": {
+          "functionality": "appointments"
+        },
+        "vars": {
+          "question": "Reserva una cita el 2026-10-11",
+          "customer": "Luis",
+          "temperature": 25,
+          "rain": 2.5,
+          "clouds": 40,
+          "wind": 14,
+          "gust": 24
+        },
+        "assert": [
+          {
+            "type": "contains",
+            "value": "No se creó la cita",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "deterministic-contains"
+          },
+          {
+            "type": "regex",
+            "value": "NO_SEGURO.*precipitación 2\\.5 mm",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "deterministic-regex"
+          },
+          {
+            "type": "factuality",
+            "value": "La cita no debe crearse porque existe precipitación de 2.5 mm, una condición prohibida por las reglas de seguridad.",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "factuality"
+          },
+          {
+            "type": "latency",
+            "threshold": 1000,
+            "metric": "latency"
+          },
+          {
+            "type": "tool-call-f1",
+            "value": [
+              "triage",
+              "fecha",
+              "clima",
+              "seguridad",
+              "agenda"
+            ],
+            "threshold": 1,
+            "metric": "tool-execution"
+          }
+        ]
+      },
+      {
+        "description": "Citas: viento marginal exige tándem experimentado",
+        "metadata": {
+          "functionality": "appointments"
+        },
+        "vars": {
+          "question": "Agenda mi salto para el 2026-10-12",
+          "customer": "Marta",
+          "temperature": 27,
+          "rain": 0,
+          "clouds": 20,
+          "wind": 24,
+          "gust": 30,
+          "experienced_tandem": false
+        },
+        "assert": [
+          {
+            "type": "contains",
+            "value": "requiere un tándem experimentado",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "deterministic-contains"
+          },
+          {
+            "type": "regex",
+            "value": "MARGINAL.*viento 24\\.0 km/h",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "deterministic-regex"
+          },
+          {
+            "type": "factuality",
+            "value": "Con viento de 24 km/h la condición es marginal y la cita no se crea si el cliente no declara un tándem experimentado.",
+            "transform": "output.split('FINAL_ANSWER\\n').pop()",
+            "metric": "factuality"
+          },
+          {
+            "type": "latency",
+            "threshold": 1000,
+            "metric": "latency"
+          },
+          {
+            "type": "tool-call-f1",
+            "value": [
+              "triage",
+              "fecha",
+              "clima",
+              "seguridad",
+              "agenda"
+            ],
+            "threshold": 1,
+            "metric": "tool-execution"
+          }
+        ]
+      }
+    ],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": {
+          "id": "openai:chat:meta/llama-3.2-90b-vision-instruct",
+          "config": {
+            "apiBaseUrl": "https://integrate.api.nvidia.com/v1",
+            "apiKeyEnvar": "[REDACTED]",
+            "temperature": 0,
+            "max_tokens": 500
+          }
+        }
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "output/promptfoo-report.html",
+      "output/promptfoo-results.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.123.1",
+    "nodeVersion": "v24.18.0",
+    "platform": "win32",
+    "arch": "x64",
+    "exportedAt": "2026-10-04T04:03:03.331Z",
+    "evaluationCreatedAt": "2026-10-04T04:01:55.818Z"
+  },
+  "vars": [
+    "question",
+    "faq_id",
+    "faq_answer",
+    "customer",
+    "temperature",
+    "rain",
+    "clouds",
+    "wind",
+    "gust",
+    "experienced_tandem"
+  ],
+  "runtimeOptions": {
+    "eventSource": "cli",
+    "showProgressBar": true,
+    "repeat": 1,
+    "maxConcurrency": 4,
+    "cache": false
+  }
+}

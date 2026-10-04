@@ -1,0 +1,13 @@
+{
+  "name": "parachute-rag-evals",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Evals de Promptfoo para la Hoja de trabajo 6",
+  "scripts": {
+    "eval": "promptfoo eval -c promptfooconfig.yaml --no-cache --output output/promptfoo-report.html --output output/promptfoo-results.json",
+    "eval:view": "promptfoo view"
+  },
+  "devDependencies": {
+    "promptfoo": "0.123.1"
+  }
+}

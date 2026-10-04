@@ -5,3 +5,7 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .DS_Store
+tmp/
+*.sqlite3
+node_modules/
+.promptfoo/
