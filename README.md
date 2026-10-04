@@ -1,4 +1,4 @@
-# Parachute S.A. - Hoja de trabajo 5
+# Parachute S.A. - Hojas de trabajo 5 y 6
 
 Sistema multiagente que conserva el RAG de FAQs de la hoja 4 y agrega reservas
 condicionadas por el pronóstico de Open-Meteo. El mismo problema se implementa
@@ -14,6 +14,46 @@ en tres programas con orquestación centralizada, jerárquica y descentralizada.
 
 Los diagramas Mermaid están en [`docs/diagramas.md`](docs/diagramas.md) y el
 informe con las respuestas está en `informe_hoja5.pdf`.
+
+## Hoja de trabajo 6: evals con Promptfoo
+
+Para cerrar el ciclo se evaluó la arquitectura **centralizada**. Es la opción
+más adecuada para este despliegue porque el `CentralSupervisor` controla de
+forma explícita el orden de todos los especialistas y mantiene las decisiones
+críticas de seguridad fuera del LLM.
+
+La configuración está en [`promptfooconfig.yaml`](promptfooconfig.yaml) y usa
+[`evals/provider.py`](evals/provider.py) como proveedor Python. El proveedor
+ejecuta el supervisor real y reemplaza solo los límites no deterministas por
+fixtures: Open-Meteo, pgvector y SQLite. Esto evita cambios persistentes y hace
+que los casos puedan repetirse.
+
+La suite contiene cinco escenarios, dos de FAQ y tres de citas. En ambas
+funcionalidades se califican:
+
+- `factuality` con un juez LLM y una respuesta de referencia;
+- métricas determinísticas `contains` y `regex`;
+- `latency` con un máximo de 1,000 ms y caché desactivada;
+- `tool-call-f1` para exigir exactamente la ruta de herramientas esperada.
+
+El último resultado fue **5/5 casos y 25/25 aserciones aprobadas**. Los
+artefactos generados directamente por Promptfoo están en:
+
+- [`output/promptfoo-report.html`](output/promptfoo-report.html), reporte para
+  entregar o abrir en el navegador;
+- [`output/promptfoo-results.json`](output/promptfoo-results.json), resultados
+  completos y auditables.
+
+Para repetir la evaluación se necesita Node.js 20 o posterior y
+`NVIDIA_API_KEY` en `.env`:
+
+```powershell
+npm install
+npm run eval
+```
+
+El script usa `--no-cache`, requisito de Promptfoo para medir latencia. La clave
+solo se lee desde el ambiente y nunca se incluye en el reporte o repositorio.
 
 ## Diseño compartido
 
