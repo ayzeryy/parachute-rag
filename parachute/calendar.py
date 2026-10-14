@@ -9,6 +9,10 @@ from pathlib import Path
 from .models import SafetyLevel, WeatherAssessment
 
 
+class DuplicateAppointmentError(ValueError):
+    """La combinación de cliente y fecha ya está reservada."""
+
+
 @dataclass(frozen=True)
 class Appointment:
     id: int
@@ -41,18 +45,24 @@ class AppointmentRepository:
     ) -> Appointment:
         if not assessment.can_schedule:
             raise ValueError("Una condición no segura nunca se puede calendarizar.")
-        with closing(self._connect()) as connection:
-            with connection:
-                cursor = connection.execute(
-                    """INSERT INTO appointments
-                       (customer, appointment_date, condition, weather_summary, created_at)
-                       VALUES (?, ?, ?, ?, ?)""",
-                    (
-                        customer.strip() or "Cliente",
-                        requested.isoformat(),
-                        assessment.level.value,
-                        assessment.summary(),
-                        datetime.now().isoformat(timespec="seconds"),
-                    ),
-                )
+        try:
+            with closing(self._connect()) as connection:
+                with connection:
+                    cursor = connection.execute(
+                        """INSERT INTO appointments
+                           (customer, appointment_date, condition, weather_summary, created_at)
+                           VALUES (?, ?, ?, ?, ?)""",
+                        (
+                            customer.strip() or "Cliente",
+                            requested.isoformat(),
+                            assessment.level.value,
+                            assessment.summary(),
+                            datetime.now().isoformat(timespec="seconds"),
+                        ),
+                    )
+        except sqlite3.IntegrityError as exc:
+            raise DuplicateAppointmentError(
+                f"Ya existe una cita para {customer.strip() or 'Cliente'} "
+                f"el {requested.isoformat()}."
+            ) from exc
         return Appointment(cursor.lastrowid, customer, requested, assessment.level)
