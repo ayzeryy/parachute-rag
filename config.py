@@ -9,6 +9,7 @@ DEFAULT_EMBEDDING_DIMENSION = 384
 DEFAULT_LLM_MODEL = "meta/llama-3.2-90b-vision-instruct"
 DEFAULT_MCP_HOST = "127.0.0.1"
 DEFAULT_MCP_PORT = 8001
+DEFAULT_MCP_TIMEOUT_SECONDS = 10.0
 DEFAULT_A2A_HOST = "127.0.0.1"
 DEFAULT_A2A_PORT = 8000
 DEFAULT_LOG_LEVEL = "INFO"
@@ -49,6 +50,15 @@ def mcp_server_url() -> str:
         "MCP_SERVER_URL",
         f"http://{mcp_host()}:{mcp_port()}/mcp",
     ).rstrip("/")
+
+
+def mcp_timeout_seconds() -> float:
+    value = float(
+        os.getenv("MCP_TIMEOUT_SECONDS", str(DEFAULT_MCP_TIMEOUT_SECONDS))
+    )
+    if value <= 0:
+        raise ValueError("MCP_TIMEOUT_SECONDS debe ser mayor que cero")
+    return value
 
 
 def a2a_host() -> str:
