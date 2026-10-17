@@ -7,5 +7,7 @@ __pycache__/
 .DS_Store
 tmp/
 *.sqlite3
+.demo/
+*.log
 node_modules/
 .promptfoo/

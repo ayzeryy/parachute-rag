@@ -1,8 +1,75 @@
-# Parachute S.A. - Hojas de trabajo 5 y 6
+# Parachute S.A. - Hojas de trabajo 5, 6 y 7
 
 Sistema multiagente que conserva el RAG de FAQs de la hoja 4 y agrega reservas
 condicionadas por el pronóstico de Open-Meteo. El mismo problema se implementa
 en tres programas con orquestación centralizada, jerárquica y descentralizada.
+
+## Hoja de trabajo 7: interoperabilidad MCP y A2A
+
+La Hoja 7 expone la composición centralizada como un agente A2A y separa las
+herramientas de dominio en un único servidor MCP con Streamable HTTP:
+
+```text
+Terminal A2A → servidor A2A → supervisor central asíncrono
+             → cliente MCP → servidor MCP → servicios de dominio
+```
+
+El servidor MCP publica cinco herramientas (`buscar_faqs`, `extraer_fecha`,
+`consultar_clima`, `evaluar_seguridad` y `crear_cita`), el recurso
+`parachute://politicas/seguridad` y el prompt `consulta_faq`. El agente externo
+se llama **Asistente Parachute S.A.** y anuncia las skills `consultar_faqs` y
+`reservar_salto`.
+
+- [Guía técnica, contratos, ejecución y matriz de aceptación](docs/hoja7.md)
+- [Guion de video de 4–7 minutos](docs/guion_video_hoja7.md)
+- [Diagramas de las arquitecturas anteriores](docs/diagramas.md)
+
+### Demostración rápida
+
+Instala primero las dependencias y consulta las fechas relativas de la demo:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+$env:DEMO_APPOINTMENTS_DB='.demo/appointments.demo.sqlite3'
+.\.venv\Scripts\python.exe -m parachute.demo_admin dates
+```
+
+Después inicia MCP, A2A y la terminal en tres consolas. Los comandos completos,
+incluidas las variables que deben declararse en **cada** proceso, están en la
+[guía técnica](docs/hoja7.md#demostración-local-en-tres-terminales). El modo
+demo usa datos externos deterministas y una SQLite separada, pero ejecuta
+realmente la terminal, A2A, MCP, el supervisor y las reglas de seguridad.
+
+### Modalidades y versiones verificadas
+
+| Aspecto | `demo` | `real` |
+|---|---|---|
+| FAQs | Búsqueda léxica sobre el corpus versionado | PostgreSQL, pgvector y embeddings locales |
+| Clima | Escenarios relativos deterministas | Open-Meteo |
+| Citas | `.demo/appointments.demo.sqlite3`, marcada como demo | `APPOINTMENTS_DB` |
+| Protocolos y dominio | A2A, MCP, supervisor y reglas reales | Los mismos componentes |
+
+El requisito declarado sigue siendo Python 3.11 o posterior. La combinación
+efectivamente probada en este repositorio es Python **3.13.3**, `mcp==2.3.0` y
+`a2a-sdk[http-server]==1.2.2`. La integración real con PostgreSQL y Open-Meteo
+requiere servicios externos y no se volvió a ejecutar durante el cierre
+documental de la Hoja 7.
+
+La Agent Card informa el modo configurado en el proceso A2A. No existe un
+handshake que certifique el modo del servidor MCP: el operador debe configurar
+ambos procesos de forma coherente y comprobar sus logs de arranque.
+
+### Verificación
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe -m pip check
+```
+
+La suite usa fixtures deterministas, servidores HTTP reales y SQLite temporal;
+no consume PostgreSQL, Open-Meteo ni NVIDIA. Los resultados concretos de la
+última ejecución se registran en la [guía de la Hoja 7](docs/hoja7.md#verificación-y-evidencia).
 
 ## Entregables
 
@@ -82,7 +149,7 @@ Requiere Python 3.11 o posterior, Docker y las dependencias de
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-Copy-Item .env.example .env
+if (-not (Test-Path '.env')) { Copy-Item '.env.example' '.env' }
 docker compose up -d
 python load_faqs.py
 ```
@@ -125,7 +192,8 @@ python -m parachute.a2a_server
 python -m parachute.cli_a2a --cliente "Cliente Demo"
 ```
 
-La terminal descubre en la Agent Card si el servidor está en `MODO DEMO`.
+La terminal muestra el modo que el proceso A2A anuncia en la Agent Card; revise
+por separado el log MCP para confirmar que también inició en `MODO DEMO`.
 Las fechas `ideal`, `prohibido`, `viento_marginal` y `nubes_marginales`
 seleccionan pronósticos deterministas; el usuario nunca envía valores
 meteorológicos. Para inspeccionar o reiniciar exclusivamente la SQLite marcada
@@ -164,9 +232,10 @@ mayor a 28 km/h, ráfagas mayores a 35 km/h o nubes mayores a 75%.
 python -m unittest discover -s tests -v
 ```
 
-Las 15 pruebas no consumen APIs externas. Verifican el corpus, la herramienta
-RAG, todos los límites meteorológicos, la ventana de Open-Meteo y la equivalencia
-funcional de las tres arquitecturas.
+La suite actual no consume APIs externas. Además de las pruebas originales del
+corpus, RAG, límites meteorológicos y tres arquitecturas, cubre los contratos y
+recorridos HTTP de la Hoja 7. La última ejecución completa aprobó 69/69 pruebas;
+consulte el detalle y sus límites en la guía técnica.
 
 ## Decisión sobre el SDK
 
