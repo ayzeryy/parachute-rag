@@ -29,7 +29,12 @@ from pydantic import ValidationError
 
 from config import a2a_server_url
 
-from .a2a_contracts import A2ARequestData, A2AResponseCategory, A2AResponseData
+from .a2a_contracts import (
+    RUNTIME_MODE_EXTENSION_URI,
+    A2ARequestData,
+    A2AResponseCategory,
+    A2AResponseData,
+)
 
 
 DEFAULT_TIMEOUT_SECONDS = 10.0
@@ -248,8 +253,20 @@ def describe_card(card: AgentCard) -> list[str]:
         capabilities.append("streaming")
     if card.capabilities.push_notifications:
         capabilities.append("notificaciones push")
+    runtime_mode = "no anunciado"
+    for extension in card.capabilities.extensions:
+        if extension.uri == RUNTIME_MODE_EXTENSION_URI:
+            value = extension.params.fields.get("mode")
+            if value is not None and value.string_value in {"real", "demo"}:
+                runtime_mode = (
+                    "MODO DEMO"
+                    if value.string_value == "demo"
+                    else "REAL"
+                )
+            break
     return [
         f"Conectado a: {card.name}",
+        f"Modo del servidor: {runtime_mode}",
         f"Skills: {skill_names}",
         f"Capacidades: {', '.join(capabilities)}",
     ]
@@ -272,7 +289,11 @@ def format_response(response: TerminalResponse) -> list[str]:
     else:
         label = "Resultado de reserva incierto"
 
-    lines = [f"[{label}]", response.text]
+    lines = [
+        f"[{label}]",
+        response.text,
+        f"Correlación: {response.data.correlation_id}",
+    ]
     if category is A2AResponseCategory.WRITE_OUTCOME_UNKNOWN:
         lines.append(
             "No repitas la reserva sin revisar antes la agenda: podría haberse creado."

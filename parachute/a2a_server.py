@@ -11,6 +11,7 @@ from a2a.server.tasks import InMemoryTaskStore
 from a2a.types.a2a_pb2 import (
     AgentCapabilities,
     AgentCard,
+    AgentExtension,
     AgentInterface,
     AgentSkill,
 )
@@ -18,16 +19,28 @@ from a2a.utils.constants import PROTOCOL_VERSION_1_0, TransportProtocol
 from dotenv import load_dotenv
 from starlette.applications import Starlette
 
-from config import a2a_host, a2a_port, a2a_server_url, log_level
+from config import (
+    a2a_host,
+    a2a_port,
+    a2a_server_url,
+    log_level,
+    parachute_mode,
+)
 
+from .a2a_contracts import RUNTIME_MODE_EXTENSION_URI
 from .a2a_executor import ParachuteA2AExecutor
 
 
 logger = logging.getLogger(__name__)
 
 
-def create_agent_card(public_url: str | None = None) -> AgentCard:
+def create_agent_card(
+    public_url: str | None = None,
+    *,
+    runtime_mode: str | None = None,
+) -> AgentCard:
     base_url = (public_url or a2a_server_url()).rstrip("/")
+    mode = runtime_mode or parachute_mode()
     input_modes = ["text/plain", "application/json"]
     output_modes = ["text/plain", "application/json"]
     return AgentCard(
@@ -48,6 +61,14 @@ def create_agent_card(public_url: str | None = None) -> AgentCard:
             streaming=False,
             push_notifications=False,
             extended_agent_card=False,
+            extensions=[
+                AgentExtension(
+                    uri=RUNTIME_MODE_EXTENSION_URI,
+                    description="Modalidad explícita del servidor Parachute.",
+                    required=False,
+                    params={"mode": mode},
+                )
+            ],
         ),
         default_input_modes=input_modes,
         default_output_modes=output_modes,
@@ -84,10 +105,12 @@ def create_a2a_app(
     *,
     public_url: str | None = None,
     executor: ParachuteA2AExecutor | None = None,
+    runtime_mode: str | None = None,
 ) -> Starlette:
     """Construye el servidor A2A JSON-RPC 1.0 y su Agent Card pública."""
 
-    card = create_agent_card(public_url)
+    mode = runtime_mode or parachute_mode()
+    card = create_agent_card(public_url, runtime_mode=mode)
     resolved_executor = executor or ParachuteA2AExecutor()
     handler = DefaultRequestHandler(
         agent_executor=resolved_executor,
@@ -100,8 +123,11 @@ def create_a2a_app(
     async def lifespan(app: Starlette) -> AsyncIterator[None]:
         del app
         interface = card.supported_interfaces[0]
-        logger.info(
-            "a2a.server.start agent=%s transport=%s url=%s",
+        log_method = logger.warning if mode == "demo" else logger.info
+        mode_label = "MODO DEMO" if mode == "demo" else "REAL"
+        log_method(
+            "a2a.server.start mode=%s agent=%s transport=%s url=%s",
+            mode_label,
             card.name,
             interface.protocol_binding,
             interface.url,

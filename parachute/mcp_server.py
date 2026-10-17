@@ -14,7 +14,13 @@ from mcp.server import MCPServer
 from mcp.server.mcpserver import Context
 
 from app import NO_ANSWER
-from config import log_level, mcp_host, mcp_port
+from config import (
+    demo_appointments_db,
+    log_level,
+    mcp_host,
+    mcp_port,
+    parachute_mode,
+)
 from knowledge_base import KnowledgeBase
 
 from .agents import DateAgent, RequestContext, SchedulingAgent
@@ -60,6 +66,19 @@ class MCPDependencies:
 
     @classmethod
     def from_env(cls) -> "MCPDependencies":
+        if parachute_mode() == "demo":
+            from .demo import (
+                DemoAppointmentRepository,
+                DemoKnowledgeBase,
+                DemoWeatherService,
+            )
+
+            return cls(
+                knowledge_base=DemoKnowledgeBase.from_env(),
+                weather_service=DemoWeatherService(),
+                appointment_repository=DemoAppointmentRepository(),
+                date_agent=DateAgent(),
+            )
         return cls(
             knowledge_base=KnowledgeBase.from_env(),
             weather_service=WeatherService(),
@@ -369,12 +388,23 @@ def _with_context_correlation(
 
 def create_mcp_server(
     dependencies: MCPDependencies | None = None,
+    *,
+    runtime_mode: str | None = None,
 ) -> MCPServer:
+    mode = runtime_mode or parachute_mode()
     deps = dependencies or MCPDependencies.from_env()
+    if mode == "demo":
+        logger.warning(
+            "mcp.server.configure mode=MODO DEMO database=%s",
+            deps.appointment_repository.path,
+        )
     server = MCPServer(
         name="parachute-tools",
         title="Herramientas de Parachute S.A.",
-        description="FAQs, clima, seguridad y reservas de Parachute S.A.",
+        description=(
+            "FAQs, clima, seguridad y reservas de Parachute S.A. "
+            f"Modo de ejecución: {mode}."
+        ),
         version="1.0.0",
         log_level=log_level(),
     )
@@ -478,13 +508,24 @@ def main() -> None:
     )
     host = mcp_host()
     port = mcp_port()
-    logger.info(
-        "mcp.server.start transport=streamable-http url=http://%s:%s/mcp",
-        host,
-        port,
-    )
+    mode = parachute_mode()
+    if mode == "demo":
+        logger.warning(
+            "mcp.server.start mode=MODO DEMO transport=streamable-http "
+            "url=http://%s:%s/mcp database=%s",
+            host,
+            port,
+            demo_appointments_db(),
+        )
+    else:
+        logger.info(
+            "mcp.server.start mode=REAL transport=streamable-http "
+            "url=http://%s:%s/mcp",
+            host,
+            port,
+        )
     try:
-        create_mcp_server().run(
+        create_mcp_server(runtime_mode=mode).run(
             transport="streamable-http",
             host=host,
             port=port,

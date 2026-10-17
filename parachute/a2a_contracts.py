@@ -6,6 +6,9 @@ from enum import Enum
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator
 
 
+RUNTIME_MODE_EXTENSION_URI = "urn:parachute:runtime-mode:v1"
+
+
 class A2ARoute(str, Enum):
     FAQ = "faq"
     APPOINTMENT = "reserva"

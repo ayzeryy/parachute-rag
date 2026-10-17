@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 
 DEFAULT_DATABASE_URL = "postgresql://parachute:parachute@localhost:5432/parachute"
@@ -13,6 +14,10 @@ DEFAULT_MCP_TIMEOUT_SECONDS = 10.0
 DEFAULT_A2A_HOST = "127.0.0.1"
 DEFAULT_A2A_PORT = 8000
 DEFAULT_LOG_LEVEL = "INFO"
+DEFAULT_PARACHUTE_MODE = "real"
+DEFAULT_DEMO_APPOINTMENTS_DB = ".demo/appointments.demo.sqlite3"
+DEFAULT_DEMO_CORPUS = "Corpus_FAQs_Parachute_SA_2026.txt"
+PROJECT_ROOT = Path(__file__).resolve().parent
 
 
 def _port_from_env(name: str, default: int) -> int:
@@ -82,3 +87,45 @@ def log_level() -> str:
     if value not in allowed:
         raise ValueError(f"LOG_LEVEL debe ser uno de: {', '.join(sorted(allowed))}")
     return value
+
+
+def parachute_mode() -> str:
+    value = os.getenv("PARACHUTE_MODE", DEFAULT_PARACHUTE_MODE).strip().lower()
+    if value not in {"real", "demo"}:
+        raise ValueError("PARACHUTE_MODE debe ser real o demo")
+    return value
+
+
+def is_demo_mode() -> bool:
+    return parachute_mode() == "demo"
+
+
+def _project_path(value: str) -> Path:
+    path = Path(value).expanduser()
+    return (
+        (PROJECT_ROOT / path).resolve()
+        if not path.is_absolute()
+        else path.resolve()
+    )
+
+
+def demo_appointments_db() -> Path:
+    path = _project_path(
+        os.getenv("DEMO_APPOINTMENTS_DB", DEFAULT_DEMO_APPOINTMENTS_DB)
+    )
+    production = _project_path(
+        os.getenv("APPOINTMENTS_DB", "appointments.sqlite3")
+    )
+    if path == production:
+        raise ValueError(
+            "DEMO_APPOINTMENTS_DB no puede coincidir con APPOINTMENTS_DB"
+        )
+    if not path.name.endswith(".demo.sqlite3"):
+        raise ValueError(
+            "DEMO_APPOINTMENTS_DB debe terminar en .demo.sqlite3"
+        )
+    return path
+
+
+def demo_corpus_path() -> Path:
+    return _project_path(os.getenv("DEMO_CORPUS_PATH", DEFAULT_DEMO_CORPUS))

@@ -98,7 +98,54 @@ python jerarquica.py --cliente "Ana"
 python descentralizada.py --cliente "Ana"
 ```
 
-Ejemplo: `Quiero reservar una cita el 2026-09-25`.
+## Demostración A2A reproducible
+
+El modo normal sigue siendo `PARACHUTE_MODE=real`. Para una demostración local
+sin PostgreSQL, Open-Meteo, NVIDIA ni descarga de embeddings, configura en
+`.env`:
+
+```dotenv
+PARACHUTE_MODE=demo
+DEMO_APPOINTMENTS_DB=.demo/appointments.demo.sqlite3
+```
+
+Consulta primero las cuatro fechas relativas disponibles en
+`America/Guatemala`; el calendario se recalcula cada día y no requiere reiniciar
+los servidores para cambiar de escenario:
+
+```powershell
+python -m parachute.demo_admin dates
+```
+
+Luego ejecuta, en tres terminales distintas:
+
+```powershell
+python -m parachute.mcp_server
+python -m parachute.a2a_server
+python -m parachute.cli_a2a --cliente "Cliente Demo"
+```
+
+La terminal descubre en la Agent Card si el servidor está en `MODO DEMO`.
+Las fechas `ideal`, `prohibido`, `viento_marginal` y `nubes_marginales`
+seleccionan pronósticos deterministas; el usuario nunca envía valores
+meteorológicos. Para inspeccionar o reiniciar exclusivamente la SQLite marcada
+como demo:
+
+```powershell
+python -m parachute.demo_admin appointments
+python -m parachute.demo_admin reset --confirm
+```
+
+El reinicio no se ejecuta al arrancar, exige confirmación y rechaza una ruta que
+coincida con `APPOINTMENTS_DB` o que no tenga la marca interna de demo.
+
+Para la modalidad real, usa una fecha ISO dentro de la ventana vigente de
+Open-Meteo. Por ejemplo, calcula una fecha relativa antes de escribir la
+consulta:
+
+```powershell
+(Get-Date).AddDays(2).ToString('yyyy-MM-dd')
+```
 
 Si el viento en superficie está entre 20 y 28 km/h, la reserva solo se permite
 al declarar un tándem experimentado:
