@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
+from enum import Enum
 from uuid import uuid4
 
 from app import NO_ANSWER
@@ -21,6 +23,7 @@ from .tool_contracts import (
     ExtractDateRequest,
     SafetyRequest,
     SearchFAQsRequest,
+    ToolErrorKind,
     WeatherRequest,
 )
 from .tool_gateway import ParachuteToolGateway
@@ -44,20 +47,48 @@ MCP_WRITE_UNCONFIRMED = (
 )
 
 
-def _controlled_error_message(error: MCPClientError) -> str:
+class MCPExecutionKind(str, Enum):
+    BUSINESS_RESULT = "business_result"
+    DOMAIN_ERROR = "domain_error"
+    MCP_ERROR = "mcp_error"
+    INFRASTRUCTURE_ERROR = "infrastructure_error"
+    WRITE_OUTCOME_UNKNOWN = "write_outcome_unknown"
+
+
+@dataclass(frozen=True)
+class MCPExecutionResult:
+    message: str
+    kind: MCPExecutionKind
+
+
+def execution_result_from_error(error: MCPClientError) -> MCPExecutionResult:
     if isinstance(error, MCPWriteOutcomeUnknownError):
-        return MCP_WRITE_UNCONFIRMED
+        return MCPExecutionResult(
+            MCP_WRITE_UNCONFIRMED,
+            MCPExecutionKind.WRITE_OUTCOME_UNKNOWN,
+        )
     if isinstance(error, MCPContractError):
-        return MCP_CONTRACT_FAILURE
+        return MCPExecutionResult(MCP_CONTRACT_FAILURE, MCPExecutionKind.MCP_ERROR)
     if isinstance(error, MCPRemoteToolError):
-        return f"No pude completar la solicitud: {error.error.message}"
+        kind = (
+            MCPExecutionKind.DOMAIN_ERROR
+            if error.error.kind is ToolErrorKind.DOMAIN
+            else MCPExecutionKind.INFRASTRUCTURE_ERROR
+        )
+        return MCPExecutionResult(
+            f"No pude completar la solicitud: {error.error.message}",
+            kind,
+        )
     if isinstance(error, MCPToolCallError):
-        return MCP_TOOL_FAILURE
+        return MCPExecutionResult(MCP_TOOL_FAILURE, MCPExecutionKind.MCP_ERROR)
     if isinstance(error, MCPProtocolError):
-        return MCP_PROTOCOL_FAILURE
+        return MCPExecutionResult(MCP_PROTOCOL_FAILURE, MCPExecutionKind.MCP_ERROR)
     if isinstance(error, MCPConnectionError):
-        return MCP_UNAVAILABLE
-    return MCP_TOOL_FAILURE
+        return MCPExecutionResult(
+            MCP_UNAVAILABLE,
+            MCPExecutionKind.INFRASTRUCTURE_ERROR,
+        )
+    return MCPExecutionResult(MCP_TOOL_FAILURE, MCPExecutionKind.MCP_ERROR)
 
 
 class MCPAsyncCentralSupervisor:
@@ -72,13 +103,25 @@ class MCPAsyncCentralSupervisor:
         self.triage = triage or TriageAgent()
 
     async def run(self, context: RequestContext, *, correlation_id: str) -> str:
+        return (
+            await self.run_result(context, correlation_id=correlation_id)
+        ).message
+
+    async def run_result(
+        self, context: RequestContext, *, correlation_id: str
+    ) -> MCPExecutionResult:
         try:
             intent = self.triage.classify(context.message)
             if intent is Intent.FAQ:
-                return await self._answer_faq(context, correlation_id)
-            return await self._schedule(context, correlation_id)
+                message = await self._answer_faq(context, correlation_id)
+            else:
+                message = await self._schedule(context, correlation_id)
+            return MCPExecutionResult(
+                message,
+                MCPExecutionKind.BUSINESS_RESULT,
+            )
         except MCPClientError as exc:
-            return _controlled_error_message(exc)
+            return execution_result_from_error(exc)
 
     async def _answer_faq(
         self, context: RequestContext, correlation_id: str
@@ -143,6 +186,25 @@ async def run_centralized_via_mcp(
 ) -> str:
     """Compone una sesión MCP aislada para una solicitud del supervisor."""
 
+    return (
+        await run_centralized_result_via_mcp(
+            context,
+            correlation_id=correlation_id,
+            server_url=server_url,
+            timeout_seconds=timeout_seconds,
+        )
+    ).message
+
+
+async def run_centralized_result_via_mcp(
+    context: RequestContext,
+    *,
+    correlation_id: str | None = None,
+    server_url: str | None = None,
+    timeout_seconds: float | None = None,
+) -> MCPExecutionResult:
+    """Ejecuta una solicitud aislada conservando la categoría del resultado."""
+
     resolved_correlation_id = (
         correlation_id if correlation_id is not None else uuid4().hex
     )
@@ -157,9 +219,9 @@ async def run_centralized_via_mcp(
     try:
         async with gateway:
             supervisor = MCPAsyncCentralSupervisor(gateway)
-            return await supervisor.run(
+            return await supervisor.run_result(
                 context,
                 correlation_id=resolved_correlation_id,
             )
     except MCPClientError as exc:
-        return _controlled_error_message(exc)
+        return execution_result_from_error(exc)
