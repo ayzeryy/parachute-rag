@@ -22,6 +22,7 @@ se llama **Asistente Parachute S.A.** y anuncia las skills `consultar_faqs` y
 
 - [Guía técnica, contratos, ejecución y matriz de aceptación](docs/hoja7.md)
 - [Guion de video de 4–7 minutos](docs/guion_video_hoja7.md)
+- [Video final y manifiesto de evidencias](docs/evidencias/hoja7/README.md)
 - [Diagramas de las arquitecturas anteriores](docs/diagramas.md)
 
 ### Demostración rápida

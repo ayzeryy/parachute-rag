@@ -397,9 +397,10 @@ versionar logs generados.
 | Reglas de seguridad | Servicios de dominio reutilizados y revalidación al crear | Suites Hoja 5 y Hoja 7 | Implementado; verificado | Ninguna regla delegada al LLM |
 | Recorrido completo | Terminal → A2A → supervisor → MCP → respuesta | Prueba E2E automatizada de demo | Implementado; verificado con fixtures | No es una prueba externa real |
 | Modo real | PostgreSQL/pgvector, embeddings y Open-Meteo | Código y configuración | Implementación completa | Verificación externa pendiente |
-| Video | Guion cronometrado y comandos relativos | `docs/guion_video_hoja7.md` | Preparado | Grabación pendiente del usuario |
-| Publicación/entrega | Documentación y artefactos locales | README y esta guía | Preparado | Publicación y entrega pendientes del usuario |
+| Video | MP4 1080p sin audio, subtítulos, guion y suma SHA-256 | `docs/evidencias/hoja7/README.md` | Grabado y verificado localmente | Publicación pendiente del usuario |
+| Publicación/entrega | Documentación y artefactos locales | README, esta guía y evidencia audiovisual | Preparado | Publicación y entrega pendientes del usuario |
 
 La implementación técnica está completa según las pruebas automatizadas. La
-entrega académica completa no debe declararse final hasta que el usuario grabe
-el video, valide el entorno real si se exige y publique los artefactos.
+evidencia audiovisual local también está completa. La entrega académica no debe
+declararse publicada hasta que el usuario revise el video, valide el entorno
+real si se exige y publique los artefactos.

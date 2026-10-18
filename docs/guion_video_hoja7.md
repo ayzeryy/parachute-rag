@@ -1,5 +1,8 @@
 # Guion de video — Hoja de trabajo 7
 
+> **Estado:** video producido y verificado localmente. Consulte el
+> [MP4 final, los subtítulos y su suma de integridad](evidencias/hoja7/README.md).
+
 Duración objetivo: **6 minutos**. Ejecute todo desde la raíz del repositorio.
 Antes de grabar, instale dependencias, reinicie únicamente la base demo marcada
 y abra tres terminales. No muestre `.env`, claves ni información personal.
