@@ -1,0 +1,43 @@
+1
+00:00:00,000 --> 00:00:12,000
+Demostración con datos externos deterministas. La terminal, los protocolos A2A y MCP, el sistema multiagente y las reglas de seguridad se ejecutan realmente.
+
+2
+00:00:12,000 --> 00:00:22,000
+Arquitectura: terminal A2A → servidor A2A → supervisor → MCP → dominio y SQLite demo.
+
+3
+00:00:22,000 --> 00:00:46,000
+Inicio real de MCP Streamable HTTP y A2A JSON-RPC en MODO DEMO.
+
+4
+00:00:46,000 --> 00:01:20,000
+Fechas relativas vigentes y descubrimiento HTTP de la Agent Card con sus dos skills.
+
+5
+00:01:20,000 --> 00:01:52,000
+FAQ con evidencia del corpus y FAQ sin evidencia: se cita FAQ-021 o se evita inventar.
+
+6
+00:01:52,000 --> 00:02:28,000
+Reserva ideal aprobada y reserva con precipitación rechazada por reglas de negocio.
+
+7
+00:02:28,000 --> 00:03:14,000
+Viento marginal sin experiencia: rechazo. La misma correlación aparece en terminal, A2A y MCP.
+
+8
+00:03:14,000 --> 00:04:07,000
+Viento marginal con experiencia declarada mediante un booleano real: reserva aprobada.
+
+9
+00:04:07,000 --> 00:04:34,500
+La SQLite demo contiene únicamente las dos reservas aprobadas.
+
+10
+00:04:34,500 --> 00:05:24,500
+Suite real: 69 pruebas aprobadas en 29.439 segundos y dependencias sin conflictos.
+
+11
+00:05:24,500 --> 00:05:36,500
+Los fixtures deterministas no validan PostgreSQL, Open-Meteo ni NVIDIA externos.

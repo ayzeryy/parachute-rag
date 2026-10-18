@@ -1,0 +1,193 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: Hoja 6 - evals del agente centralizado de Parachute S.A.
+
+prompts:
+  - id: solicitud-usuario
+    raw: "{{question}}"
+
+providers:
+  - id: file://evals/provider.py
+    label: Arquitectura centralizada
+
+defaultTest:
+  options:
+    # Factuality requiere un juez LLM. Se reutiliza el endpoint OpenAI-compatible
+    # de NVIDIA que ya usa el proyecto; la clave nunca se guarda en este archivo.
+    provider:
+      id: openai:chat:meta/llama-3.2-90b-vision-instruct
+      config:
+        apiBaseUrl: https://integrate.api.nvidia.com/v1
+        apiKeyEnvar: NVIDIA_API_KEY
+        temperature: 0
+        max_tokens: 500
+
+tests:
+  - description: "FAQ: límite de peso"
+    metadata:
+      functionality: faq
+    vars:
+      question: "¿Cuál es el peso máximo permitido para saltar?"
+      faq_id: FAQ-021
+      faq_answer: >-
+        El límite de peso máximo estricto para realizar el salto tándem es de
+        100 kg. Cada participante es pesado durante el registro. Entre 90 kg y
+        100 kg se aplica un recargo de Q250.
+    assert:
+      - type: contains
+        value: "100 kg"
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: deterministic-contains
+      - type: regex
+        value: "FAQ-021"
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: deterministic-regex
+      - type: factuality
+        value: >-
+          El peso máximo estricto es 100 kg; cada participante es pesado al
+          registrarse y entre 90 kg y 100 kg se cobra Q250 adicionales.
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: factuality
+      - type: latency
+        threshold: 1000
+        metric: latency
+      - type: tool-call-f1
+        value: [triage, faqs]
+        threshold: 1
+        metric: tool-execution
+
+  - description: "FAQ: edad mínima y autorización"
+    metadata:
+      functionality: faq
+    vars:
+      question: "¿Qué edad necesito para saltar y qué pasa si tengo 17 años?"
+      faq_id: FAQ-023
+      faq_answer: >-
+        La edad mínima es 18 años con DPI o pasaporte. Las personas de 16 y 17
+        años solo pueden participar acompañadas por sus padres o tutores legales,
+        quienes deben firmar la autorización correspondiente.
+    assert:
+      - type: contains
+        value: "18 años"
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: deterministic-contains
+      - type: regex
+        value: "(16 y 17|17 años).*?(padres|tutores)"
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: deterministic-regex
+      - type: factuality
+        value: >-
+          La edad mínima es 18 años con identificación. Una persona de 16 o 17
+          años requiere acompañamiento y autorización de sus padres o tutores.
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: factuality
+      - type: latency
+        threshold: 1000
+        metric: latency
+      - type: tool-call-f1
+        value: [triage, faqs]
+        threshold: 1
+        metric: tool-execution
+
+  - description: "Citas: condición ideal crea la reserva"
+    metadata:
+      functionality: appointments
+    vars:
+      question: "Quiero agendar una cita el 2026-10-10"
+      customer: Ana
+      temperature: 26
+      rain: 0
+      clouds: 15
+      wind: 12
+      gust: 20
+    assert:
+      - type: contains
+        value: "Cita #1 creada"
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: deterministic-contains
+      - type: regex
+        value: "2026-10-10.*Condición IDEAL"
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: deterministic-regex
+      - type: factuality
+        value: >-
+          La cita del 10 de octubre de 2026 se crea porque no hay precipitación,
+          el viento es 12 km/h, las ráfagas 20 km/h y las nubes 15%.
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: factuality
+      - type: latency
+        threshold: 1000
+        metric: latency
+      - type: tool-call-f1
+        value: [triage, fecha, clima, seguridad, agenda]
+        threshold: 1
+        metric: tool-execution
+
+  - description: "Citas: lluvia impide crear la reserva"
+    metadata:
+      functionality: appointments
+    vars:
+      question: "Reserva una cita el 2026-10-11"
+      customer: Luis
+      temperature: 25
+      rain: 2.5
+      clouds: 40
+      wind: 14
+      gust: 24
+    assert:
+      - type: contains
+        value: "No se creó la cita"
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: deterministic-contains
+      - type: regex
+        value: "NO_SEGURO.*precipitación 2\\.5 mm"
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: deterministic-regex
+      - type: factuality
+        value: >-
+          La cita no debe crearse porque existe precipitación de 2.5 mm, una
+          condición prohibida por las reglas de seguridad.
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: factuality
+      - type: latency
+        threshold: 1000
+        metric: latency
+      - type: tool-call-f1
+        value: [triage, fecha, clima, seguridad, agenda]
+        threshold: 1
+        metric: tool-execution
+
+  - description: "Citas: viento marginal exige tándem experimentado"
+    metadata:
+      functionality: appointments
+    vars:
+      question: "Agenda mi salto para el 2026-10-12"
+      customer: Marta
+      temperature: 27
+      rain: 0
+      clouds: 20
+      wind: 24
+      gust: 30
+      experienced_tandem: false
+    assert:
+      - type: contains
+        value: "requiere un tándem experimentado"
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: deterministic-contains
+      - type: regex
+        value: "MARGINAL.*viento 24\\.0 km/h"
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: deterministic-regex
+      - type: factuality
+        value: >-
+          Con viento de 24 km/h la condición es marginal y la cita no se crea
+          si el cliente no declara un tándem experimentado.
+        transform: "output.split('FINAL_ANSWER\\n').pop()"
+        metric: factuality
+      - type: latency
+        threshold: 1000
+        metric: latency
+      - type: tool-call-f1
+        value: [triage, fecha, clima, seguridad, agenda]
+        threshold: 1
+        metric: tool-execution
+
